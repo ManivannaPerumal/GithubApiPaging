@@ -16,5 +16,5 @@ interface RepositoryDao {
     suspend fun clearRepositoryList()
 
     @Query("SELECT * FROM repository_list")
-    abstract fun getRepository():List<Repository>
+     fun getRepository():List<Repository>
 }

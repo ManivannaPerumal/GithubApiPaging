@@ -4,6 +4,8 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import android.view.KeyEvent
 import android.view.inputmethod.EditorInfo
+import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
@@ -47,6 +49,7 @@ class RepoSearchActivity : AppCompatActivity() {
         pagingData: Flow<PagingData<Repository>>,
         uiActions: (UiAction) -> Unit
     ) {
+
         val repoAdapter = ReposAdapter()
         list.adapter = repoAdapter.withLoadStateHeaderAndFooter(
             header = ReposLoadStateAdapter { repoAdapter.retry() },
@@ -114,6 +117,7 @@ class RepoSearchActivity : AppCompatActivity() {
         pagingData: Flow<PagingData<Repository>>,
         onScrollChanged: (UiAction.Scroll) -> Unit
     ) {
+
         list.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 if (dy != 0) onScrollChanged(UiAction.Scroll(currentQuery = uiState.value.query))
@@ -150,7 +154,14 @@ class RepoSearchActivity : AppCompatActivity() {
             repoAdapter.loadStateFlow.collect { loadState ->
                 val isListEmpty = loadState.refresh is LoadState.NotLoading && repoAdapter.itemCount == 0
 
+                emptyList.isVisible = isListEmpty
+                list.isVisible = !isListEmpty
+                progressBar.isVisible = loadState.source.refresh is LoadState.Loading
+             //   retryButton.isVisible = loadState.source.refresh is LoadState.Error
+
             }
         }
-    }
-    }
+
+
+            }
+        }

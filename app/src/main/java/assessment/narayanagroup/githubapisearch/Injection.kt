@@ -15,7 +15,7 @@ object Injection {
     private fun provideGithubRepository(context: Context): RepoListRepository {
 
         return RepoListRepository(AppRestClient ,
-            HomeLocalDataSourceImpl(RepoDatabase.getInstance(context).RepositoryDao())
+            HomeLocalDataSourceImpl(RepoDatabase.getInstance(context).RepositoryDao() )
         )
     }
 

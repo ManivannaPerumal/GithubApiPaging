@@ -5,9 +5,10 @@ import androidx.paging.PagingState
 import assessment.narayanagroup.githubapisearch.data.Constant.GITHUB_STARTING_PAGE_INDEX
 import assessment.narayanagroup.githubapisearch.data.Constant.NETWORK_PAGE_SIZE
 import assessment.narayanagroup.githubapisearch.data.api.ApiServices
-import assessment.narayanagroup.githubapisearch.data.db.RepoDatabase
 import assessment.narayanagroup.githubapisearch.data.model.Repository
 import assessment.narayanagroup.githubapisearch.data.repository.home.HomeLocalDataSourceImpl
+import assessment.narayanagroup.githubapisearch.presentation.App
+import assessment.narayanagroup.githubapisearch.base.Util.isOnline
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -26,11 +27,23 @@ class GithubPagingSource(
        // val apiQuery = query + IN_QUALIFIER
         val apiQuery = query
         return try {
-            val response =  service.getRepositoryList(apiQuery, position, params.loadSize)
-            var repos = response.items
+            var repos : List<Repository>  = emptyList()
+
+            if(isOnline(App.CONTEXT)){
+                val response =  service.getRepositoryList(apiQuery, position, params.loadSize)
+                 repos = response.items
+            }
+            else{
+if(position == 1){
+    CoroutineScope(Dispatchers.IO).launch {
+
+        repos = homeLocalDataSourceImpl.getRepositoryFromDB()
+    }
+}
+            }
+
 
             val nextKey = if (repos.isEmpty()) {
-                repos = homeLocalDataSourceImpl.getRepositoryFromDB()
                 null
             } else {
                 // initial load size = 3 * NETWORK_PAGE_SIZE
@@ -43,7 +56,7 @@ class GithubPagingSource(
 
                     CoroutineScope(Dispatchers.IO).launch {
                         repos.let {
-                            homeLocalDataSourceImpl.clearAll()
+                           // homeLocalDataSourceImpl.clearAll()
                             homeLocalDataSourceImpl.saveRepositoryToDB(it.take(15))
 
                         }

@@ -8,7 +8,7 @@ import kotlinx.coroutines.launch
 
 class HomeLocalDataSourceImpl(private val artistDao:RepositoryDao):
     HomeLocalDataSource {
-    override suspend fun getRepositoryFromDB(): List<Repository> {
+    override  fun getRepositoryFromDB(): List<Repository> {
        return artistDao.getRepository()
     }
 
