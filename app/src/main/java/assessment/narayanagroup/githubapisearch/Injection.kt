@@ -1,26 +1,25 @@
 package assessment.narayanagroup.githubapisearch
 
+import android.content.Context
 import androidx.lifecycle.ViewModelProvider
+import androidx.savedstate.SavedStateRegistryOwner
 import assessment.narayanagroup.githubapisearch.data.api.AppRestClient
+import assessment.narayanagroup.githubapisearch.data.db.RepoDatabase
 import assessment.narayanagroup.githubapisearch.data.repository.RepoListRepository
+import assessment.narayanagroup.githubapisearch.data.repository.home.HomeLocalDataSourceImpl
+import assessment.narayanagroup.githubapisearch.presentation.home.ViewModelFactory
 
-/**
- * Class that handles object creation.
- * Like this, objects can be passed as parameters in the constructors and then replaced for
- * testing, where needed.
- */
 object Injection {
 
 
-    private fun provideGithubRepository(): RepoListRepository {
-        return RepoListRepository(AppRestClient)
+    private fun provideGithubRepository(context: Context): RepoListRepository {
+
+        return RepoListRepository(AppRestClient ,
+            HomeLocalDataSourceImpl(RepoDatabase.getInstance(context).RepositoryDao())
+        )
     }
 
-    /**
-     * Provides the [ViewModelProvider.Factory] that is then used to get a reference to
-     * [ViewModel] objects.
-     */
-   /* fun provideViewModelFactory(owner: SavedStateRegistryOwner): ViewModelProvider.Factory {
-        return ViewModelFactory(owner, provideGithubRepository())
-    }*/
+    fun provideViewModelFactory(context: Context, owner: SavedStateRegistryOwner): ViewModelProvider.Factory {
+        return ViewModelFactory(owner, provideGithubRepository(context))
+    }
 }
