@@ -13,8 +13,8 @@ interface RepositoryDao {
     suspend fun saveRepository(artists : List<Repository>)
 
     @Query("DELETE FROM repository_list")
-    suspend fun deleteAllArtists()
+    suspend fun clearRepositoryList()
 
     @Query("SELECT * FROM repository_list")
-    suspend fun getArtists():List<Repository>
+    abstract fun getRepository():List<Repository>
 }
