@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
+    id 'kotlin-parcelize'
 }
 
 android {
@@ -10,28 +11,34 @@ android {
 
     defaultConfig {
         applicationId "assessment.narayanagroup.githubapisearch"
-        minSdk 21
+        minSdk 23
         targetSdk 33
         versionCode 1
         versionName "1.0"
 
+        def STRING_VER = "String"
+        def BASE_URL = "BASE_URL"
+        def GITHUB_API = "GIT_URL"
+
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField STRING_VER, BASE_URL,GITHUB_API_BASE_URL
+        buildConfigField STRING_VER, GITHUB_API,GITHUB_API_KEY
     }
 
     buildTypes {
-        def STRING_VER = "String"
-        def BASE_URL = "BASE_URL"
+
 
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            buildConfigField STRING_VER, BASE_URL,GITHUB_API_BASE_URL
+
         }
 
         debug {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            buildConfigField STRING_VER, BASE_URL,GITHUB_API_BASE_URL
         }
 
     }
@@ -41,6 +48,10 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
+    }
+
+    buildFeatures {
+        viewBinding = true
     }
 }
 
@@ -82,4 +93,15 @@ dependencies {
     implementation "com.squareup.okhttp3:logging-interceptor:$okhttpLoggingInterceptorVersion"
 
     implementation 'com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2'
+
+    //glide
+    implementation ("com.github.bumptech.glide:glide:4.13.2") {
+        exclude group: "com.android.support"
+    }
+    kapt 'androidx.annotation:annotation:1.5.0'
+    kapt 'com.github.bumptech.glide:compiler:4.13.2'
+    implementation ("com.github.bumptech.glide:glide:4.13.2@aar") {
+        transitive = true
+    }
+
 }
