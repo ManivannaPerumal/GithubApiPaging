@@ -9,19 +9,17 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import assessment.narayanagroup.githubapisearch.data.model.Repository
 import assessment.narayanagroup.githubapisearch.data.repository.RepoListRepository
-import assessment.narayanagroup.githubapisearch.domain.repository.usecase.GetArtistsUseCase
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
-class RepoSearchViewModel (private val repository: RepoListRepository,
-                           private val savedStateHandle: SavedStateHandle
+class RepoSearchViewModel(
+    private val repository: RepoListRepository,
+    private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     val state: StateFlow<UiState>
 
     val pagingDataFlow: Flow<PagingData<Repository>>
-
-
 
 
     val accept: (UiAction) -> Unit
@@ -80,14 +78,14 @@ class RepoSearchViewModel (private val repository: RepoListRepository,
         super.onCleared()
     }
 
-     fun searchRepo(queryString: String): Flow<PagingData<Repository>> =
+    fun searchRepo(queryString: String): Flow<PagingData<Repository>> =
         repository.getSearchResultStream(queryString)
 
 
     fun getArtists() = liveData {
-        Log.i("ARTTAG","artist view model getArtists")
+        Log.i("ARTTAG", "artist view model getArtists")
         val artistList = repository.getArtistsFromDB()
-       // suspend fun execute():List<Repository>? = repository.getArtistsFromDB()
+        // suspend fun execute():List<Repository>? = repository.getArtistsFromDB()
         emit(artistList)
     }
 
@@ -104,7 +102,6 @@ data class UiState(
     val lastQueryScrolled: String = DEFAULT_QUERY,
     val hasNotScrolledForCurrentSearch: Boolean = false
 )
-
 
 
 private const val LAST_SEARCH_QUERY: String = "last_search_query"

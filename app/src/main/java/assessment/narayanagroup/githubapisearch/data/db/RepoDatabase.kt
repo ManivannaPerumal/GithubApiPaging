@@ -7,13 +7,14 @@ import androidx.room.RoomDatabase
 import assessment.narayanagroup.githubapisearch.data.model.Repository
 import assessment.narayanagroup.githubapisearch.presentation.App
 
-@Database(entities = [Repository::class],
+@Database(
+    entities = [Repository::class],
     version = 1,
     exportSchema = false
 )
 
-abstract class RepoDatabase :RoomDatabase(){
-abstract fun RepositoryDao() : RepositoryDao
+abstract class RepoDatabase : RoomDatabase() {
+    abstract fun RepositoryDao(): RepositoryDao
 
     companion object {
 

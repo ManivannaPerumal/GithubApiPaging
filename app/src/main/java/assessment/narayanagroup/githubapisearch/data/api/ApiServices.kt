@@ -19,29 +19,29 @@ interface ApiServices {
         @Query("q") query: String,
         @Query("page") page: Int,
         @Query("per_page") itemsPerPage: Int
-    ):RepoSearchResponse
+    ): RepoSearchResponse
 
     @GET(GET_CONT)
     suspend fun getRepoContributors(
-        @Path("owner") owner : String,
-        @Path("repo") repo : String,
+        @Path("owner") owner: String,
+        @Path("repo") repo: String,
         @Query("page") page: Int,
-       @Query("per_page") itemsPerPage: Int
-    ) : RepoContributorResponse
+        @Query("per_page") itemsPerPage: Int
+    ): RepoContributorResponse
 
     @GET(GET_PROJECT)
     suspend fun getRepoProjects(
-        @Path("owner") owner : String,
-        @Path("repo") repo : String,
+        @Path("owner") owner: String,
+        @Path("repo") repo: String,
         @Query("page") page: Int,
         @Query("per_page") itemsPerPage: Int
-    ) : RepoProjectsResponse
+    ): RepoProjectsResponse
 
     @GET(GET_README)
     suspend fun getReadMe(
-        @Path("owner") owner : String,
-        @Path("repo") repo : String
-    ) : ReadMe
+        @Path("owner") owner: String,
+        @Path("repo") repo: String
+    ): ReadMe
 
 
 }

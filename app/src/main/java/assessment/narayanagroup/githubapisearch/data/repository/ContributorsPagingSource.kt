@@ -5,7 +5,6 @@ import androidx.paging.PagingState
 import assessment.narayanagroup.githubapisearch.data.Constant.GITHUB_STARTING_PAGE_INDEX
 import assessment.narayanagroup.githubapisearch.data.Constant.NETWORK_PAGE_SIZE
 import assessment.narayanagroup.githubapisearch.data.api.ApiServices
-import assessment.narayanagroup.githubapisearch.data.model.RepoContributorResponse
 import assessment.narayanagroup.githubapisearch.data.model.RepoContributorResponseItem
 import okio.IOException
 import retrofit2.HttpException
@@ -13,23 +12,21 @@ import retrofit2.HttpException
 
 class ContributorsPagingSource(
     private val service: ApiServices,
-    private val owner : String , private val repo : String
+    private val owner: String, private val repo: String
 ) : PagingSource<Int, RepoContributorResponseItem>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, RepoContributorResponseItem> {
         val position = params.key ?: GITHUB_STARTING_PAGE_INDEX
-       // val apiQuery = query + IN_QUALIFIER
 
         return try {
-                val response =  service.getRepoContributors(owner = owner
-                    , repo = repo, position, params.loadSize)
+            val response = service.getRepoContributors(
+                owner = owner, repo = repo, position, params.loadSize
+            )
 
 
             val nextKey = if (response.isEmpty()) {
                 null
             } else {
-                // initial load size = 3 * NETWORK_PAGE_SIZE
-                // ensure we're not requesting duplicating items, at the 2nd request
                 position + (params.loadSize / NETWORK_PAGE_SIZE)
             }
 
@@ -44,6 +41,7 @@ class ContributorsPagingSource(
             return LoadResult.Error(exception)
         }
     }
+
     // The refresh key is used for subsequent refresh calls to PagingSource.load after the initial load
     override fun getRefreshKey(state: PagingState<Int, RepoContributorResponseItem>): Int? {
 

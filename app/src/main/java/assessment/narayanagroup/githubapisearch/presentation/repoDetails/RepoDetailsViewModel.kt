@@ -1,6 +1,5 @@
 package assessment.narayanagroup.githubapisearch.presentation.repoDetails
 
-import android.util.Log
 import androidx.lifecycle.*
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
@@ -10,7 +9,6 @@ import assessment.narayanagroup.githubapisearch.base.BaseViewModel
 import assessment.narayanagroup.githubapisearch.data.Constant.DISPATCHER_IO
 import assessment.narayanagroup.githubapisearch.data.model.*
 import assessment.narayanagroup.githubapisearch.domain.RepoDetailRepository
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 

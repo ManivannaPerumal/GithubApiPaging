@@ -20,8 +20,7 @@ class ReposAdapter : PagingDataAdapter<Repository, RepoViewHolder>(REPO_COMPARAT
         val repoItem = getItem(position)
         if (repoItem != null) {
             holder.bind(repoItem)
-        }
-        else{
+        } else {
             holder.bind(repository[position])
         }
     }

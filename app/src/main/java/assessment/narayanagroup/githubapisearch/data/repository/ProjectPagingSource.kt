@@ -5,8 +5,6 @@ import androidx.paging.PagingState
 import assessment.narayanagroup.githubapisearch.data.Constant.GITHUB_STARTING_PAGE_INDEX
 import assessment.narayanagroup.githubapisearch.data.Constant.NETWORK_PAGE_SIZE
 import assessment.narayanagroup.githubapisearch.data.api.ApiServices
-import assessment.narayanagroup.githubapisearch.data.model.RepoContributorResponse
-import assessment.narayanagroup.githubapisearch.data.model.RepoContributorResponseItem
 import assessment.narayanagroup.githubapisearch.data.model.RepoProjectsResponseItem
 import okio.IOException
 import retrofit2.HttpException
@@ -14,16 +12,17 @@ import retrofit2.HttpException
 
 class ProjectPagingSource(
     private val service: ApiServices,
-    private val owner : String , private val repo : String
+    private val owner: String, private val repo: String
 ) : PagingSource<Int, RepoProjectsResponseItem>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, RepoProjectsResponseItem> {
         val position = params.key ?: GITHUB_STARTING_PAGE_INDEX
-       // val apiQuery = query + IN_QUALIFIER
+        // val apiQuery = query + IN_QUALIFIER
 
         return try {
-                val response =  service.getRepoProjects(owner = owner
-                    , repo = repo, position, params.loadSize)
+            val response = service.getRepoProjects(
+                owner = owner, repo = repo, position, params.loadSize
+            )
 
 
             val nextKey = if (response.isEmpty()) {
@@ -45,6 +44,7 @@ class ProjectPagingSource(
             return LoadResult.Error(exception)
         }
     }
+
     // The refresh key is used for subsequent refresh calls to PagingSource.load after the initial load
     override fun getRefreshKey(state: PagingState<Int, RepoProjectsResponseItem>): Int? {
 

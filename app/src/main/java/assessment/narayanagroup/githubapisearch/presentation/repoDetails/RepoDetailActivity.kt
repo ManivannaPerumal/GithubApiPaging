@@ -7,15 +7,11 @@ import android.text.SpannableString
 import android.transition.AutoTransition
 import android.transition.TransitionManager
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.paging.CombinedLoadStates
-import androidx.paging.LoadState
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import assessment.narayanagroup.githubapisearch.Injection
@@ -28,13 +24,12 @@ import assessment.narayanagroup.githubapisearch.presentation.repoDetails.adapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.lastOrNull
 import kotlinx.coroutines.launch
 
 
 class RepoDetailActivity : AppCompatActivity() {
 
-    var url : ReadMe = ReadMe("","")
+    var url: ReadMe = ReadMe("", "")
     var projectAdapter = ProjectAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,7 +44,12 @@ class RepoDetailActivity : AppCompatActivity() {
         val viewModel =
             ViewModelProvider(
                 this,
-                Injection.provideDetailViewModelFactory(owner = this, context = this, owners = repoDetails.owner.login , repo = repoDetails.name)
+                Injection.provideDetailViewModelFactory(
+                    owner = this,
+                    context = this,
+                    owners = repoDetails.owner.login,
+                    repo = repoDetails.name
+                )
             )[RepoDetailsViewModel::class.java]
 
 
@@ -63,13 +63,12 @@ class RepoDetailActivity : AppCompatActivity() {
         binding.txtVisibility.text = repoDetails.visibility
         binding.txtFullName.text = repoDetails.fullName
 
-        val html = "<u>"+repoDetails.url+"</u>"
+        val html = "<u>" + repoDetails.url + "</u>"
 
-        if(repoDetails.hasProjects){
+        if (repoDetails.hasProjects) {
             binding.cardProjectList.visibility = View.VISIBLE
             binding.webView.visibility = View.GONE
-        }
-        else{
+        } else {
             binding.cardProjectList.visibility = View.GONE
             binding.webView.visibility = View.VISIBLE
         }
@@ -80,8 +79,8 @@ class RepoDetailActivity : AppCompatActivity() {
             binding.txtLanguage.text = "Language: $it"
         }
 
-        binding.txtURL.setOnClickListener{
-            val intent = Intent(this@RepoDetailActivity,WebViewActivity::class.java)
+        binding.txtURL.setOnClickListener {
+            val intent = Intent(this@RepoDetailActivity, WebViewActivity::class.java)
             intent.putExtra("readmeUrl", repoDetails.url)
             startActivity(intent)
         }
@@ -96,7 +95,7 @@ class RepoDetailActivity : AppCompatActivity() {
 
         viewModel.getReadMe()
 
-        viewModel.readmeDetail.observe(this){
+        viewModel.readmeDetail.observe(this) {
             it?.let {
                 url = it
                 binding.txtReadMe.text = it.name
@@ -104,12 +103,12 @@ class RepoDetailActivity : AppCompatActivity() {
             }
         }
 
-      /*  binding.txtReadMe.setOnClickListener{
+        /*  binding.txtReadMe.setOnClickListener{
 
-                val intent = Intent(this@RepoDetailActivity,WebViewActivity::class.java)
-                intent.putExtra("readmeUrl", url.htmlUrl)
-                startActivity(intent)
-        }*/
+                  val intent = Intent(this@RepoDetailActivity,WebViewActivity::class.java)
+                  intent.putExtra("readmeUrl", url.htmlUrl)
+                  startActivity(intent)
+          }*/
 
         binding.layoutReadMe.setOnClickListener {
             if (binding.webView.visibility == View.VISIBLE) {
@@ -124,7 +123,7 @@ class RepoDetailActivity : AppCompatActivity() {
         val items = viewModel.pagingDataFlow
         val itemProject = viewModel.pagingProjectDataFlow
         val contributorAdapter = ContributorsAdapter()
-         projectAdapter = ProjectAdapter()
+        projectAdapter = ProjectAdapter()
         binding.bindAdapter(contributorAdapter = contributorAdapter)
         binding.bindAdapters(projectAdapter = projectAdapter)
 
@@ -137,7 +136,6 @@ class RepoDetailActivity : AppCompatActivity() {
                 }
 
 
-
             }
         }
 
@@ -145,7 +143,7 @@ class RepoDetailActivity : AppCompatActivity() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
 
-              itemProject.collectLatest {
+                itemProject.collectLatest {
                     projectAdapter.submitData(it)
                 }
 
@@ -156,13 +154,14 @@ class RepoDetailActivity : AppCompatActivity() {
     }
 
 
-
     private fun ActivityRepoDetailBinding.bindAdapter(contributorAdapter: ContributorsAdapter) {
         list.adapter = contributorAdapter
 
-        list.layoutManager = LinearLayoutManager(list.context,
+        list.layoutManager = LinearLayoutManager(
+            list.context,
             LinearLayoutManager.HORIZONTAL,
-            false)
+            false
+        )
         val decoration = DividerItemDecoration(list.context, DividerItemDecoration.VERTICAL)
         list.addItemDecoration(decoration)
     }

@@ -7,10 +7,9 @@ import androidx.recyclerview.widget.DiffUtil
 import assessment.narayanagroup.githubapisearch.data.model.RepoContributorResponseItem
 import assessment.narayanagroup.githubapisearch.databinding.ContributorsViewholderBinding
 
-/**
- * Adapter for an [Article] [List].
- */
-class ContributorsAdapter : PagingDataAdapter<RepoContributorResponseItem, ContributorsViewHolder>(ARTICLE_DIFF_CALLBACK) {
+
+class ContributorsAdapter :
+    PagingDataAdapter<RepoContributorResponseItem, ContributorsViewHolder>(ARTICLE_DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContributorsViewHolder =
         ContributorsViewHolder(
@@ -29,12 +28,19 @@ class ContributorsAdapter : PagingDataAdapter<RepoContributorResponseItem, Contr
     }
 
     companion object {
-        private val ARTICLE_DIFF_CALLBACK = object : DiffUtil.ItemCallback<RepoContributorResponseItem>() {
-            override fun areItemsTheSame(oldItem: RepoContributorResponseItem, newItem: RepoContributorResponseItem): Boolean =
-                oldItem.id == newItem.id
+        private val ARTICLE_DIFF_CALLBACK =
+            object : DiffUtil.ItemCallback<RepoContributorResponseItem>() {
+                override fun areItemsTheSame(
+                    oldItem: RepoContributorResponseItem,
+                    newItem: RepoContributorResponseItem
+                ): Boolean =
+                    oldItem.id == newItem.id
 
-            override fun areContentsTheSame(oldItem: RepoContributorResponseItem, newItem: RepoContributorResponseItem): Boolean =
-                oldItem == newItem
-        }
+                override fun areContentsTheSame(
+                    oldItem: RepoContributorResponseItem,
+                    newItem: RepoContributorResponseItem
+                ): Boolean =
+                    oldItem == newItem
+            }
     }
 }

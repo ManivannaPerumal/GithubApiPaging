@@ -27,9 +27,9 @@ import kotlinx.coroutines.launch
 
 class RepoSearchActivity : AppCompatActivity() {
 
-    lateinit var viewModel : RepoSearchViewModel
+    lateinit var viewModel: RepoSearchViewModel
 
-    lateinit var  binding : ActivityRepoSearchBinding
+    lateinit var binding: ActivityRepoSearchBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,12 +37,18 @@ class RepoSearchActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-        viewModel  = ViewModelProvider(this, Injection.provideViewModelFactory(owner = this@RepoSearchActivity, context = this@RepoSearchActivity))
+        viewModel = ViewModelProvider(
+            this,
+            Injection.provideViewModelFactory(
+                owner = this@RepoSearchActivity,
+                context = this@RepoSearchActivity
+            )
+        )
             .get(RepoSearchViewModel::class.java)
 
         // get the view model
-       /* val viewModel = ViewModelProvider(this, Injection.provideViewModelFactory(owner = this, context = this))
-            .get(RepoSearchViewModel::class.java)*/
+        /* val viewModel = ViewModelProvider(this, Injection.provideViewModelFactory(owner = this, context = this))
+             .get(RepoSearchViewModel::class.java)*/
 
         // add dividers between RecyclerView's row items
         val decoration = DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
@@ -167,7 +173,8 @@ class RepoSearchActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             repoAdapter.loadStateFlow.collect { loadState ->
-                val isListEmpty = loadState.refresh is LoadState.NotLoading && repoAdapter.itemCount == 0
+                val isListEmpty =
+                    loadState.refresh is LoadState.NotLoading && repoAdapter.itemCount == 0
 
                 emptyList.isVisible = isListEmpty
                 list.isVisible = !isListEmpty
@@ -178,6 +185,6 @@ class RepoSearchActivity : AppCompatActivity() {
         }
 
 
-            }
+    }
 
-        }
+}

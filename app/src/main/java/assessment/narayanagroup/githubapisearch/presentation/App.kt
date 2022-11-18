@@ -2,9 +2,6 @@ package assessment.narayanagroup.githubapisearch.presentation
 
 import android.app.Application
 import android.content.Context
-import android.os.Bundle
-import assessment.narayanagroup.githubapisearch.MainActivity
-import assessment.narayanagroup.githubapisearch.R
 import kotlin.properties.Delegates
 
 class App : Application() {

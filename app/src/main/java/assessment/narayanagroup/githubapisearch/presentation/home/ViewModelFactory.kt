@@ -5,7 +5,6 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.savedstate.SavedStateRegistryOwner
 import assessment.narayanagroup.githubapisearch.data.repository.RepoListRepository
-import assessment.narayanagroup.githubapisearch.domain.repository.usecase.GetArtistsUseCase
 
 /**
  * Factory for ViewModels

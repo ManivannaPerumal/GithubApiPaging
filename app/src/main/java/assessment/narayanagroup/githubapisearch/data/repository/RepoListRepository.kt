@@ -15,22 +15,30 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.toList
 import java.lang.Exception
 
-class RepoListRepository(private val service: AppRestClient  ,private val homeLocalDataSourceImpl: HomeLocalDataSourceImpl ) : BaseRepository() {
+class RepoListRepository(
+    private val service: AppRestClient,
+    private val homeLocalDataSourceImpl: HomeLocalDataSourceImpl
+) : BaseRepository() {
 
 
-
- fun getSearchResultStream(query: String): Flow<PagingData<Repository>> {
+    fun getSearchResultStream(query: String): Flow<PagingData<Repository>> {
         return Pager(
             config = PagingConfig(
                 pageSize = NETWORK_PAGE_SIZE,
                 enablePlaceholders = false
             ),
-            pagingSourceFactory = { GithubPagingSource( service.wServer , query,homeLocalDataSourceImpl) }
+            pagingSourceFactory = {
+                GithubPagingSource(
+                    service.wServer,
+                    query,
+                    homeLocalDataSourceImpl
+                )
+            }
         ).flow
     }
 
 
-    suspend fun getArtistsFromDB():List<Repository>{
+    suspend fun getArtistsFromDB(): List<Repository> {
 
         lateinit var artistList: List<Repository>
         try {
@@ -41,8 +49,6 @@ class RepoListRepository(private val service: AppRestClient  ,private val homeLo
 
         return artistList
     }
-
-
 
 
 }

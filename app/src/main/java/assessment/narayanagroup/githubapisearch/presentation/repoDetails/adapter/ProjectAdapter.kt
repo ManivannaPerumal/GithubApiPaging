@@ -5,12 +5,9 @@ import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import assessment.narayanagroup.githubapisearch.data.model.RepoProjectsResponseItem
-import assessment.narayanagroup.githubapisearch.databinding.ContributorsViewholderBinding
 import assessment.narayanagroup.githubapisearch.databinding.ProjectViewholderBinding
 
-/**
- * Adapter for an [Article] [List].
- */
+
 class ProjectAdapter : PagingDataAdapter<RepoProjectsResponseItem, ProjectViewHolder>(ARTICLE_DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProjectViewHolder =

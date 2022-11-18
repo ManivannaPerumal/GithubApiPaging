@@ -9,7 +9,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 object AppRestClient : BaseRestClient() {
 
     val wServer by lazy {
-        getServer(ApiServices::class.java, BuildConfig.BASE_URL) }
+        getServer(ApiServices::class.java, BuildConfig.BASE_URL)
+    }
 
     override fun handleConverterFactory(builder: Retrofit.Builder) {
         builder.addCallAdapterFactory(CoroutineCallAdapterFactory())

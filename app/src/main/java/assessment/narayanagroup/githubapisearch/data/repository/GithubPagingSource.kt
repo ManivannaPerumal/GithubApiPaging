@@ -8,7 +8,7 @@ import assessment.narayanagroup.githubapisearch.data.api.ApiServices
 import assessment.narayanagroup.githubapisearch.data.model.Repository
 import assessment.narayanagroup.githubapisearch.data.repository.home.HomeLocalDataSourceImpl
 import assessment.narayanagroup.githubapisearch.presentation.App
-import assessment.narayanagroup.githubapisearch.base.Util.isOnline
+import assessment.narayanagroup.githubapisearch.presentation.utils.Util.isOnline
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -60,7 +60,8 @@ class GithubPagingSource(
                         }
                     }
                 }
-            } catch (_: Exception) { }
+            } catch (_: Exception) {
+            }
 
             LoadResult.Page(
                 data = repos,

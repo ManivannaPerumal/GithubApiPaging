@@ -1,8 +1,6 @@
 package assessment.narayanagroup.githubapisearch.data.model
 import com.google.gson.annotations.SerializedName
 
-
-
 class UserRepoResponse : ArrayList<UserRepoResponseItem>()
 
 data class UserRepoResponseItem(

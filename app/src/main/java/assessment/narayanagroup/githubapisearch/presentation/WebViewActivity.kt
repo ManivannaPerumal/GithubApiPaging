@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Toast
-import assessment.narayanagroup.githubapisearch.data.model.Repository
 import assessment.narayanagroup.githubapisearch.databinding.ActivityWebviewBinding
 
 class WebViewActivity : AppCompatActivity() {
