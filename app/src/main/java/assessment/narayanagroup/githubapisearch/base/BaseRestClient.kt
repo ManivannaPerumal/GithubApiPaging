@@ -46,17 +46,22 @@ class AuthInterceptorResponse : Interceptor {
         val originalRequest = chain.request()
         val authenticationRequest = originalRequest.newBuilder()
             .addHeader("Accept", "application/vnd.github+json")
-            .addHeader("Authorization", "Bearer"+assessment.narayanagroup.githubapisearch.BuildConfig.GIT_URL)
+            .addHeader(
+                "Authorization",assessment.narayanagroup.githubapisearch.BuildConfig.GIT_URL
+            )
 
         chain.proceed(authenticationRequest.build()).apply {
-    /*        when {
+            when {
 
-                (code == 200 )-> {
-return this
+                (code == 200) -> {
+                    return this
                 }
-                else -> return this
-            }*/
-            return this
+                else ->
+                    return this
+
+
+            }
+
         }
     }
 

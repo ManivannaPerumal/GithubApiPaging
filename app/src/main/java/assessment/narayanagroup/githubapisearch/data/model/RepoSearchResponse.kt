@@ -1,8 +1,12 @@
 package assessment.narayanagroup.githubapisearch.data.model
 
+import android.os.Parcelable
+import androidx.room.Embedded
 import androidx.room.Entity
+import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
 /**
  * Data class to hold responses from searchRepo API calls.
@@ -14,14 +18,20 @@ data class RepoSearchResponse(
 )
 
 @Entity(tableName = "repository_list")
+@Parcelize
 data class Repository(
     @PrimaryKey @field:SerializedName("id") val id: Long,
     @field:SerializedName("name") val name: String,
     @field:SerializedName("full_name") val fullName: String,
     @field:SerializedName("html_url") val url: String,
     @field:SerializedName("description") val description: String?,
+    @Embedded
+    @field:SerializedName("owner") val owner: Owner,
+    @field:SerializedName("visibility") val visibility: String,
+    @field:SerializedName("has_projects") val hasProjects: Boolean,
+    @field:SerializedName("language") val language: String ?
 
-)
+):  Parcelable
 
 
 /*data class Repo(
@@ -186,42 +196,10 @@ data class Repository(
 )*/
 
 
-
+@Parcelize
 data class Owner(
     @SerializedName("avatar_url")
     val avatarUrl: String,
-    @SerializedName("events_url")
-    val eventsUrl: String,
-    @SerializedName("followers_url")
-    val followersUrl: String,
-    @SerializedName("following_url")
-    val followingUrl: String,
-    @SerializedName("gists_url")
-    val gistsUrl: String,
-    @SerializedName("gravatar_id")
-    val gravatarId: String,
-    @SerializedName("html_url")
-    val htmlUrl: String,
-    @SerializedName("id")
-    val id: Int,
     @SerializedName("login")     // owner name
-    val login: String,
-    @SerializedName("node_id")
-    val nodeId: String,
-    @SerializedName("organizations_url")
-    val organizationsUrl: String,
-    @SerializedName("received_events_url")
-    val receivedEventsUrl: String,
-    @SerializedName("repos_url")
-    val reposUrl: String,
-    @SerializedName("site_admin")
-    val siteAdmin: Boolean,
-    @SerializedName("starred_url")
-    val starredUrl: String,
-    @SerializedName("subscriptions_url")
-    val subscriptionsUrl: String,
-    @SerializedName("type")
-    val type: String,
-    @SerializedName("url")
-    val url: String
-)
+    val login: String
+):Parcelable

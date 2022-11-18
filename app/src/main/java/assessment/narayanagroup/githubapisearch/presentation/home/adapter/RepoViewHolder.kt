@@ -2,6 +2,7 @@ package assessment.narayanagroup.githubapisearch.presentation.home.adapter
 
 import android.content.Intent
 import android.net.Uri
+import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import assessment.narayanagroup.githubapisearch.R
 import assessment.narayanagroup.githubapisearch.data.model.Repository
+import assessment.narayanagroup.githubapisearch.presentation.repoDetails.RepoDetailActivity
+import java.io.Serializable
 
 /**
  * View Holder for a [Repo] RecyclerView list item.
@@ -23,8 +26,8 @@ class RepoViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     init {
         view.setOnClickListener {
             repo?.let { url ->
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url.url))
-
+                val intent = Intent(view.context, RepoDetailActivity::class.java)
+                intent.putExtra("repo_value", repo as Parcelable)
                 view.context.startActivity(intent)
             }
         }
