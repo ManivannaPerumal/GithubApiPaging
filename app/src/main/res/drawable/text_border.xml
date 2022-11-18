@@ -15,6 +15,6 @@ android:shape="rectangle">
 <stroke android:width="2dp" android:color="#ccc" />
 
 <!--- This is the background color -->
-<solid android:color="@color/grey" />
+<solid android:color="@color/teal_700" />
 
 </shape>

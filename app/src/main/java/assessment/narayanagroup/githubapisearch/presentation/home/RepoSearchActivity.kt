@@ -36,6 +36,8 @@ class RepoSearchActivity : AppCompatActivity() {
         val decoration = DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
         binding.list.addItemDecoration(decoration)
 
+        binding.appBarLayout.appBar.title = "Home"
+        binding.appBarLayout.appBar.navigationIcon = null
         // bind the state
         binding.bindState(
             uiState = viewModel.state,

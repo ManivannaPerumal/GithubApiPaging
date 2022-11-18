@@ -7,4 +7,6 @@
     <string name="unknown">\?</string>
     <string name="retry">Retry</string>
     <string name="repo_image">REPO_IMAGE</string>
+    <string name="projects">Projects</string>
+    <string name="contributors">Contributors</string>
 </resources>

@@ -9,10 +9,13 @@ import android.transition.TransitionManager
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.paging.CombinedLoadStates
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import assessment.narayanagroup.githubapisearch.Injection
@@ -32,6 +35,7 @@ import kotlinx.coroutines.launch
 class RepoDetailActivity : AppCompatActivity() {
 
     var url : ReadMe = ReadMe("","")
+    var projectAdapter = ProjectAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,6 +64,15 @@ class RepoDetailActivity : AppCompatActivity() {
         binding.txtFullName.text = repoDetails.fullName
 
         val html = "<u>"+repoDetails.url+"</u>"
+
+        if(repoDetails.hasProjects){
+            binding.cardProjectList.visibility = View.VISIBLE
+            binding.webView.visibility = View.GONE
+        }
+        else{
+            binding.cardProjectList.visibility = View.GONE
+            binding.webView.visibility = View.VISIBLE
+        }
 
         binding.txtURL.text = Html.fromHtml(html)
         repoDetails.language?.let {
@@ -111,7 +124,7 @@ class RepoDetailActivity : AppCompatActivity() {
         val items = viewModel.pagingDataFlow
         val itemProject = viewModel.pagingProjectDataFlow
         val contributorAdapter = ContributorsAdapter()
-        val projectAdapter = ProjectAdapter()
+         projectAdapter = ProjectAdapter()
         binding.bindAdapter(contributorAdapter = contributorAdapter)
         binding.bindAdapters(projectAdapter = projectAdapter)
 
@@ -128,6 +141,7 @@ class RepoDetailActivity : AppCompatActivity() {
             }
         }
 
+
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
 
@@ -135,18 +149,13 @@ class RepoDetailActivity : AppCompatActivity() {
                     projectAdapter.submitData(it)
                 }
 
-             /*   if(itemProject.lastOrNull() == null){
-                    Toast.makeText(this@RepoDetailActivity, "hi", Toast.LENGTH_SHORT).show()
-                }
-                else{
-                    itemProject.collectLatest {
-                        projectAdapter.submitData(it)
-                    }
-                }*/
+
             }
         }
 
     }
+
+
 
     private fun ActivityRepoDetailBinding.bindAdapter(contributorAdapter: ContributorsAdapter) {
         list.adapter = contributorAdapter
@@ -164,5 +173,7 @@ class RepoDetailActivity : AppCompatActivity() {
         val decoration = DividerItemDecoration(projectList.context, DividerItemDecoration.VERTICAL)
         projectList.addItemDecoration(decoration)
     }
+
+
 }
 
