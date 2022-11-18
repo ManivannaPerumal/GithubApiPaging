@@ -12,6 +12,8 @@ import assessment.narayanagroup.githubapisearch.data.db.RepoDatabase
 import assessment.narayanagroup.githubapisearch.data.model.Repository
 import assessment.narayanagroup.githubapisearch.data.repository.home.HomeLocalDataSourceImpl
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.toList
+import java.lang.Exception
 
 class RepoListRepository(private val service: AppRestClient  ,private val homeLocalDataSourceImpl: HomeLocalDataSourceImpl ) : BaseRepository() {
 
@@ -27,6 +29,18 @@ class RepoListRepository(private val service: AppRestClient  ,private val homeLo
         ).flow
     }
 
+
+    suspend fun getArtistsFromDB():List<Repository>{
+
+        lateinit var artistList: List<Repository>
+        try {
+            artistList = homeLocalDataSourceImpl.getRepositoryFromDB()
+        } catch (exception: Exception) {
+            Log.i("MyTag", exception.message.toString())
+        }
+
+        return artistList
+    }
 
 
 

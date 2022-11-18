@@ -1,14 +1,17 @@
 package assessment.narayanagroup.githubapisearch.data.repository.home
 
+import androidx.paging.PagingData
 import assessment.narayanagroup.githubapisearch.data.db.RepositoryDao
 import assessment.narayanagroup.githubapisearch.data.model.Repository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 class HomeLocalDataSourceImpl(private val artistDao:RepositoryDao):
     HomeLocalDataSource {
-    override  fun getRepositoryFromDB(): List<Repository> {
+    override suspend fun getRepositoryFromDB(): List<Repository> {
+
        return artistDao.getRepository()
     }
 

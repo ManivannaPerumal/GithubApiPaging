@@ -11,6 +11,7 @@ import assessment.narayanagroup.githubapisearch.presentation.App
 import assessment.narayanagroup.githubapisearch.base.Util.isOnline
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import okio.IOException
 import retrofit2.HttpException
@@ -24,30 +25,28 @@ class GithubPagingSource(
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Repository> {
         val position = params.key ?: GITHUB_STARTING_PAGE_INDEX
-       // val apiQuery = query + IN_QUALIFIER
+        // val apiQuery = query + IN_QUALIFIER
         val apiQuery = query
         return try {
-            var repos : List<Repository>  = emptyList()
+            var repos: List<Repository> = emptyList()
 
-            if(isOnline(App.CONTEXT)){
-                val response =  service.getRepositoryList(apiQuery, position, params.loadSize)
-                 repos = response.items
+            if (isOnline(App.CONTEXT)) {
+                val response = service.getRepositoryList(apiQuery, position, params.loadSize)
+                repos = response.items
+            } else {
+                if (position == 1) {
+
+                    CoroutineScope(Dispatchers.IO).launch {
+
+                        repos = homeLocalDataSourceImpl.getRepositoryFromDB()
+                    }
+                    delay(3000L)
+                }
             }
-            else{
-if(position == 1){
-    CoroutineScope(Dispatchers.IO).launch {
-
-        repos = homeLocalDataSourceImpl.getRepositoryFromDB()
-    }
-}
-            }
-
 
             val nextKey = if (repos.isEmpty()) {
                 null
             } else {
-                // initial load size = 3 * NETWORK_PAGE_SIZE
-                // ensure we're not requesting duplicating items, at the 2nd request
                 position + (params.loadSize / NETWORK_PAGE_SIZE)
             }
 
@@ -56,15 +55,12 @@ if(position == 1){
 
                     CoroutineScope(Dispatchers.IO).launch {
                         repos.let {
-                           // homeLocalDataSourceImpl.clearAll()
+                            // homeLocalDataSourceImpl.clearAll()
                             homeLocalDataSourceImpl.saveRepositoryToDB(it.take(15))
-
                         }
-
                     }
                 }
-            }
-            catch (_: Exception){ }
+            } catch (_: Exception) { }
 
             LoadResult.Page(
                 data = repos,
@@ -77,6 +73,7 @@ if(position == 1){
             return LoadResult.Error(exception)
         }
     }
+
     // The refresh key is used for subsequent refresh calls to PagingSource.load after the initial load
     override fun getRefreshKey(state: PagingState<Int, Repository>): Int? {
 

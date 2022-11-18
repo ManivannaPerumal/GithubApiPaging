@@ -1,11 +1,15 @@
 package assessment.narayanagroup.githubapisearch.presentation.home
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import android.view.KeyEvent
+import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.core.view.isVisible
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
@@ -17,20 +21,28 @@ import assessment.narayanagroup.githubapisearch.data.model.Repository
 import assessment.narayanagroup.githubapisearch.databinding.ActivityRepoSearchBinding
 import assessment.narayanagroup.githubapisearch.presentation.home.adapter.ReposAdapter
 import assessment.narayanagroup.githubapisearch.presentation.home.adapter.ReposLoadStateAdapter
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 class RepoSearchActivity : AppCompatActivity() {
 
+    lateinit var viewModel : RepoSearchViewModel
+
+    lateinit var  binding : ActivityRepoSearchBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val binding = ActivityRepoSearchBinding.inflate(layoutInflater)
+        binding = ActivityRepoSearchBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
 
-        // get the view model
-        val viewModel = ViewModelProvider(this, Injection.provideViewModelFactory(owner = this, context = this))
+        viewModel  = ViewModelProvider(this, Injection.provideViewModelFactory(owner = this@RepoSearchActivity, context = this@RepoSearchActivity))
             .get(RepoSearchViewModel::class.java)
+
+        // get the view model
+       /* val viewModel = ViewModelProvider(this, Injection.provideViewModelFactory(owner = this, context = this))
+            .get(RepoSearchViewModel::class.java)*/
 
         // add dividers between RecyclerView's row items
         val decoration = DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
@@ -113,6 +125,7 @@ class RepoSearchActivity : AppCompatActivity() {
         }
     }
 
+
     private fun ActivityRepoSearchBinding.bindList(
         repoAdapter: ReposAdapter,
         uiState: StateFlow<UiState>,
@@ -159,11 +172,12 @@ class RepoSearchActivity : AppCompatActivity() {
                 emptyList.isVisible = isListEmpty
                 list.isVisible = !isListEmpty
                 progressBar.isVisible = loadState.source.refresh is LoadState.Loading
-             //   retryButton.isVisible = loadState.source.refresh is LoadState.Error
+
 
             }
         }
 
 
             }
+
         }

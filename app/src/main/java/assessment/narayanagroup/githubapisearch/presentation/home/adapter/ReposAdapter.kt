@@ -10,6 +10,8 @@ import assessment.narayanagroup.githubapisearch.data.model.Repository
  */
 class ReposAdapter : PagingDataAdapter<Repository, RepoViewHolder>(REPO_COMPARATOR) {
 
+    private val repository = ArrayList<Repository>()
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RepoViewHolder {
         return RepoViewHolder.create(parent)
     }
@@ -18,6 +20,9 @@ class ReposAdapter : PagingDataAdapter<Repository, RepoViewHolder>(REPO_COMPARAT
         val repoItem = getItem(position)
         if (repoItem != null) {
             holder.bind(repoItem)
+        }
+        else{
+            holder.bind(repository[position])
         }
     }
 

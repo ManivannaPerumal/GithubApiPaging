@@ -8,6 +8,7 @@ import assessment.narayanagroup.githubapisearch.data.db.RepoDatabase
 import assessment.narayanagroup.githubapisearch.data.repository.RepoListRepository
 import assessment.narayanagroup.githubapisearch.data.repository.home.HomeLocalDataSourceImpl
 import assessment.narayanagroup.githubapisearch.domain.RepoDetailRepository
+import assessment.narayanagroup.githubapisearch.domain.repository.usecase.GetArtistsUseCase
 import assessment.narayanagroup.githubapisearch.presentation.home.ViewModelFactory
 import assessment.narayanagroup.githubapisearch.presentation.repoDetails.RepoDetailViewModelFactory
 
@@ -26,8 +27,8 @@ object Injection {
         return RepoDetailRepository(AppRestClient,owner = owner , repo = repo)
     }
 
-    fun provideViewModelFactory(context: Context, owner: SavedStateRegistryOwner): ViewModelProvider.Factory {
-        return ViewModelFactory(owner, provideGithubRepository(context))
+    fun provideViewModelFactory(context: Context, owner: SavedStateRegistryOwner ): ViewModelProvider.Factory {
+        return ViewModelFactory(owner,provideGithubRepository(context))
     }
 
     fun provideDetailViewModelFactory(context: Context, owner: SavedStateRegistryOwner,owners : String , repo : String): ViewModelProvider.Factory {

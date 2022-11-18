@@ -5,6 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import assessment.narayanagroup.githubapisearch.data.model.Repository
+import assessment.narayanagroup.githubapisearch.presentation.App
 
 @Database(entities = [Repository::class],
     version = 1,
@@ -27,7 +28,7 @@ abstract fun RepositoryDao() : RepositoryDao
 
         private fun buildDatabase(context: Context) =
             Room.databaseBuilder(
-                context.applicationContext,
+                App.CONTEXT,
                 RepoDatabase::class.java, "assessment.db"
             )
                 .build()

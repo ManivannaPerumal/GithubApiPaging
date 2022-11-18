@@ -1,12 +1,15 @@
 package assessment.narayanagroup.githubapisearch.presentation.home
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import assessment.narayanagroup.githubapisearch.data.model.Repository
 import assessment.narayanagroup.githubapisearch.data.repository.RepoListRepository
+import assessment.narayanagroup.githubapisearch.domain.repository.usecase.GetArtistsUseCase
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
@@ -17,6 +20,8 @@ class RepoSearchViewModel (private val repository: RepoListRepository,
     val state: StateFlow<UiState>
 
     val pagingDataFlow: Flow<PagingData<Repository>>
+
+
 
 
     val accept: (UiAction) -> Unit
@@ -75,8 +80,17 @@ class RepoSearchViewModel (private val repository: RepoListRepository,
         super.onCleared()
     }
 
-    private fun searchRepo(queryString: String): Flow<PagingData<Repository>> =
+     fun searchRepo(queryString: String): Flow<PagingData<Repository>> =
         repository.getSearchResultStream(queryString)
+
+
+    fun getArtists() = liveData {
+        Log.i("ARTTAG","artist view model getArtists")
+        val artistList = repository.getArtistsFromDB()
+       // suspend fun execute():List<Repository>? = repository.getArtistsFromDB()
+        emit(artistList)
+    }
+
 
 }
 
